@@ -1,0 +1,45 @@
+name: BookLand Automatic Check
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  website-validation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get repository
+        uses: actions/checkout@v4
+
+      - name: Validate project files
+        run: |
+          test -f index.html
+          test -f style.css
+          test -f script.js
+          echo "Project files found!"
+
+      - name: Validate HTML content
+        run: |
+          grep -q "BookLand" index.html
+          grep -q "catalog" index.html
+          echo "HTML validation completed!"
+
+      - name: Validate resources
+        run: |
+          grep -q "style.css" index.html
+          grep -q "script.js" index.html
+          echo "Resources connected!"
+
+      - name: Validate JavaScript
+        run: |
+          grep -q "bookButton" script.js
+          echo "JavaScript validation completed!"
+
+      - name: Finish project check
+        run: echo "BookLand validation successful!"
